@@ -1,0 +1,19 @@
+<div>
+
+<p>
+A game that challenges your precision and timing skills. Your mission is to collect as many leaves as possible while avoiding the decay that gradually turns them red. Simply hover your mouse over one of the leaves then click on the left mouse button (or press the space key) to collect the leaf. Each successful collection increases your leaf count. As you gather leaves, your count will increase. When your leaf count reaches multiples of 10 (e.g., 10, 20, 30), an exit button will appear, offering you two choices: continue collecting more leaves or exit the game. The game has three difficulty levels.
+</p>
+<p>
+    Difficulty Levels:
+</p>
+<ol>
+  <li>Level 1: Collect each leaf individually, with the exit button appearing when your count is a multiple of 10.</li>
+  <li>Level 2: This is more challenging mode, every leaf you collect will be counted as two. However, the exit button won't appear until your leaf count is a multiple of 30.</li>
+  <li>Level 3: For those seeking an even greater challenge, in this level each leaf you collected counts as three. Be prepared, though, as the exit button doesn't show up unless your leaf count is a multiple of 30.</li>
+</ol>
+
+<p>
+  Unfortunately, at the moment you can't switch difficulty levels, so it will always be level 1. The ability to switch difficulty levels will be added in the near future.
+</p>
+
+</div>

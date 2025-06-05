@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="../button.css" />
+    <style>
+      html,
+      body {
+        font-family: "Oxanium", sans-serif;
+        font-optical-sizing: auto;
+        overflow-x: hidden;
+
+        /* font-weight: <weight>;
+        font-style: normal; */
+      }
+
+      h1 {
+        padding-left: 10px;
+        padding-right: 10px;
+        color: grey;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="game_holder"
+      style="
+        height: 100vh;
+        top: 0;
+        left: 0;
+        position: fixed;
+        width: 100vw;
+        transition: filter 1s;
+        padding-top: 20px;
+      "
+    >
+      <div
+        style="
+          position: fixed;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+        "
+      >
+        <div
+          id="fail_counter"
+          style="
+            background: rgba(0, 0, 0, 0.158);
+            display: flex;
+            justify-content: center;
+            border-radius: 12px;
+          "
+        >
+          <h1>X</h1>
+          <h1>X</h1>
+          <h1>X</h1>
+          <h1>X</h1>
+          <h1>X</h1>
+          <h1>X</h1>
+          <h1>X</h1>
+          <h1>X</h1>
+          <h1>X</h1>
+          <h1>X</h1>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    let is_warning_seen = false;
+
+    let is_menu_open = false;
+
+    let is_game_over = false;
+
+    is_exit_button_hidden = true;
+
+    let original_leaf_counter =
+      window.parent.document.getElementById("leaf_counter");
+    let leaf_counter_clone = original_leaf_counter.cloneNode(true);
+    leaf_counter_clone.querySelector("h2").textContent = "0";
+    document.querySelector("#game_holder").appendChild(leaf_counter_clone);
+
+    let original_menu = window.parent.document.getElementById("menu_holder");
+    let menu_clone = original_menu.cloneNode(true);
+    menu_clone
+      .querySelector("#button_exit")
+      .addEventListener("click", function () {
+        exit(false);
+      });
+    menu_clone
+      .querySelector("#button_restart")
+      .addEventListener("click", function () {
+        exit(true);
+      });
+    menu_clone
+      .querySelector("#button_continue")
+      .addEventListener("click", function () {
+        toggle_menu();
+      });
+    document.querySelector("body").appendChild(menu_clone);
+
+    function exit(restart) {
+      if (is_warning_seen || is_game_over) {
+        parent.close_game(restart);
+      } else {
+        menu_clone.querySelector("#warning").style.marginTop = "0%";
+        is_warning_seen = true;
+      }
+    }
+
+    function toggle_menu() {
+      if (!is_game_over) {
+        if (is_menu_open) {
+          document.querySelector("#game_holder").style.filter = "blur(0px)";
+          document.getElementById("menu_holder").style.transform =
+            "translateY(-200%)";
+          is_menu_open = false;
+          menu_clone.querySelector("#warning").style.marginTop = "-100%";
+          is_warning_seen = false;
+        } else {
+          document.querySelector("#game_holder").style.filter = "blur(12px)";
+          document.getElementById("menu_holder").style.transform =
+            "translateY(0px)";
+          is_menu_open = true;
+        }
+      }
+    }
+  </script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@v0.176.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.176.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from "three";
+
+    window.THREE = THREE;
+
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+    let collected_shiny_leaves = 0;
+
+    let camera, scene, renderer;
+
+    let rotate_group, leaves_group;
+
+    let leaf_timer = 0;
+
+    let fail = 0;
+
+    let mouse = new THREE.Vector2(1, 1);
+
+    let raycaster = new THREE.Raycaster();
+
+    const clock = new THREE.Clock();
+    let mixer;
+
+    const manager = new THREE.LoadingManager();
+    manager.onLoad = function () {
+      console.log("loaded");
+      init();
+    };
+
+    const loader = new GLTFLoader(manager).setPath("../res/3D/");
+
+    let tree_model, leaf_model, exit_button;
+
+    loader.load("tree.glb", function (gltf) {
+      tree_model = fix_model(gltf.scene);
+    });
+
+    loader.load("leaf.glb", function (gltf) {
+      leaf_model = fix_model(gltf.scene);
+    });
+
+    loader.load("exit_button.glb", function (gltf) {
+      exit_button = fix_model(gltf.scene);
+    });
+
+    function init() {
+      const container = document.createElement("div");
+      container.style.position = "fixed";
+      container.style.top = "0px";
+      container.style.left = "0px";
+      document.querySelector("#game_holder").appendChild(container);
+
+      camera = new THREE.PerspectiveCamera(
+        45,
+        window.innerWidth / window.innerHeight,
+        0.25,
+        300
+      );
+      camera.position.set(0, 4, 20);
+
+      scene = new THREE.Scene();
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFShadowMap;
+      renderer.setAnimationLoop(animate);
+
+      container.appendChild(renderer.domElement);
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      //   controls.addEventListener("change", render); // use if there is no animation loop1
+      controls.minDistance = 2;
+      controls.maxDistance = 50;
+
+      controls.mouseButtons = {
+        // LEFT: THREE.MOUSE.ROTATE,
+        MIDDLE: THREE.MOUSE.DOLLY,
+        RIGHT: THREE.MOUSE.ROTATE,
+      };
+
+      controls.target.set(0, 3, 0);
+
+      controls.update();
+
+      rotate_group = new THREE.Group();
+      leaves_group = new THREE.Group();
+
+      leaves_group.position.set(0, 4, 0);
+
+      // exit_button.rotation.set(Math.PI, 0, 0);
+      exit_button.position.set(0, -3, 0);
+
+      rotate_group.add(tree_model);
+      rotate_group.add(exit_button);
+      rotate_group.add(leaves_group);
+
+      scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444, 3));
+
+      const light = new THREE.DirectionalLight(0xffffff, 1);
+      light.position.set(200, 180, 100); //default; light shining from top
+      light.castShadow = true; // default false
+
+      const SHADOW_MAP_WIDTH = 4048,
+        SHADOW_MAP_HEIGHT = 2024;
+
+      light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
+      light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
+
+      scene.add(light);
+
+      scene.add(rotate_group);
+
+      animate();
+
+      window.addEventListener("resize", onWindowResize);
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mousedown", onMouseDown);
+      window.addEventListener("keydown", onKeyDown);
+    }
+
+    function set_clip_action(times, positions) {
+      const positionKF = new THREE.VectorKeyframeTrack(
+        ".position",
+        times,
+        positions
+      );
+      const clip = new THREE.AnimationClip("Action", -1, [positionKF]);
+
+      // setup the THREE.AnimationMixer
+      mixer = new THREE.AnimationMixer(exit_button);
+
+      let created_clip_action = mixer.clipAction(clip);
+
+      created_clip_action.repetitions = 1;
+      created_clip_action.clampWhenFinished = true;
+
+      return created_clip_action;
+    }
+
+    function onKeyDown() {
+      if (event.key == "Escape") {
+        toggle_menu();
+      }
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      animate();
+    }
+
+    function onMouseMove() {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    }
+
+    function onMouseDown(){
+      if (event.button == 0){
+        select();
+      }
+    }
+
+    function select() {
+      if (!is_menu_open) {
+        raycaster.setFromCamera(mouse, camera);
+
+        const intersection = raycaster.intersectObjects(scene.children);
+
+        if (intersection.length > 0) {
+          let intersection_object = intersection[0].object;
+          for (let leaf_number in leaves_group.children) {
+            let leaf = leaves_group.children[leaf_number];
+            if (leaf.children[0].children.includes(intersection_object, 0)) {
+              leaves_group.remove(leaf);
+              collected_shiny_leaves += 1;
+
+              if (collected_shiny_leaves % 10 == 0) {
+                let clip_action = set_clip_action(
+                  [0, 1],
+                  [4, -3, 0, 4, -1.2, 0]
+                );
+                clip_action.play();
+                is_exit_button_hidden = false;
+              } else {
+                if (!is_exit_button_hidden) {
+                  let clip_action = set_clip_action(
+                    [0, 1],
+                    [4, -1.2, 0, 4, -3, 0]
+                  );
+                  clip_action.play();
+                  is_exit_button_hidden = true;
+                }
+              }
+
+              break;
+            }
+          }
+
+          if (exit_button.children.includes(intersection_object, 0)) {
+            game_over(true);
+          }
+        }
+      }
+    }
+
+    function dist_3d(position) {
+      return Math.sqrt(position.x ** 2 + position.y ** 2 + position.z ** 2);
+    }
+
+    function animate() {
+      renderer.render(scene, camera);
+
+      const deltaTime = clock.getDelta();
+      if (mixer != undefined) {
+        mixer.update(deltaTime);
+      }
+
+      if (!is_menu_open) {
+        document
+          .getElementById("leaf_counter")
+          .querySelector("h2").textContent = collected_shiny_leaves;
+
+        if (Date.now() - leaf_timer > 600) {
+          let leaf_clone = leaf_model.clone();
+          leaf_clone.children[0].children[0].material =
+            leaf_model.children[0].children[0].material.clone();
+          leaf_clone.position.set(0, 0, 0);
+          leaves_group.add(leaf_clone);
+
+          let rand_number_x = Math.random();
+          let rand_number_y = Math.random();
+          let rand_number_z = Math.random();
+
+          leaf_timer = Date.now();
+          leaf_clone.spawn_time = leaf_timer;
+          leaf_clone.rand_number_x = rand_number_x;
+          leaf_clone.rand_number_y = rand_number_y;
+          leaf_clone.rand_number_z = rand_number_z;
+        }
+
+        let delta = Date.now() * 0.001;
+
+        let groups_rotation = delta * 0.1;
+
+        rotate_group.rotation.y = groups_rotation;
+
+        leaves_group.rotation.x = groups_rotation;
+        leaves_group.rotation.y = groups_rotation;
+        leaves_group.rotation.z = groups_rotation;
+
+        for (let leaf_number in leaves_group.children) {
+          let leaf = leaves_group.children[leaf_number];
+
+          leaf.rotation.x = delta + leaf.rand_number_x * 10;
+          leaf.rotation.y = delta + leaf.rand_number_y * 10;
+          leaf.rotation.z = delta + leaf.rand_number_z * 10;
+
+          let move_by = (Date.now() - leaf.spawn_time) * 0.00001;
+
+          if (dist_3d(leaf.position) < 5) {
+            move_by = move_by * 100;
+          }
+
+          if (dist_3d(leaf.position) > 15) {
+            move_by = move_by * 0.01;
+          }
+
+          if (dist_3d(leaf.position) > 13) {
+            leaf.children[0].children[0].material.color.lerpColors(
+              leaf.children[0].children[0].material.color,
+              new THREE.Color().setRGB(1, 0, 0),
+              move_by
+            );
+          }
+
+          if (leaf.children[0].children[0].material.color.r >= 0.98) {
+            leaf.scale.x -= move_by;
+            leaf.scale.y -= move_by;
+            leaf.scale.z -= move_by;
+          }
+
+          if (leaf.scale.x <= 0) {
+            leaves_group.remove(leaf);
+            if (fail < 10) {
+              document.getElementById("fail_counter").children[
+                fail
+              ].style.color = "red";
+              fail += 1;
+            } else {
+              game_over(false);
+              // parent.close_game();
+            }
+          }
+
+          leaf.position.x += Math.sin(leaf.rand_number_x * 100) * move_by;
+          leaf.position.y += Math.cos(leaf.rand_number_y * 100) * move_by;
+          leaf.position.z += Math.tan(leaf.rand_number_z * 100) * move_by;
+        }
+
+        window.leaves_group = leaves_group;
+      }
+    }
+
+    function game_over(is_victory) {
+      menu_clone.querySelector("#button_continue").style.display = "none";
+      if (is_victory) {
+        menu_clone.querySelector("#menu_label").textContent = "FINISHED";
+        menu_clone.querySelector(
+          "#game_over_status"
+        ).textContent = `You gained ${collected_shiny_leaves} shiny leaves!`;
+        menu_clone.querySelector("#game_over_status").style.display = "block";
+
+        localStorage.setItem("shiny_leaves", (parseInt(localStorage.getItem("shiny_leaves")) + collected_shiny_leaves)) ;
+        parent.update_leaf_counter()
+      } else {
+        menu_clone.querySelector("#menu_label").textContent = "GAME OVER";
+      }
+      toggle_menu();
+      is_game_over = true;
+    }
+
+    function fix_model(model) {
+      for (let obj_number in model.children) {
+        let obj = model.children[obj_number];
+
+        let mesh;
+
+        if (obj.type == "Mesh") {
+          mesh = obj;
+        } else if (obj.type == "Group") {
+          mesh = obj.children[0];
+        } else {
+          continue;
+        }
+        mesh.material = new THREE.MeshPhongMaterial({
+          color: mesh.material.color,
+        });
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+      }
+
+      return model;
+    }
+  </script>
+</html>

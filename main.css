@@ -1,0 +1,127 @@
+html,
+body {
+  font-family: "Oxanium", sans-serif;
+  font-optical-sizing: auto;
+  overflow-x: hidden;
+
+  /* font-weight: <weight>;
+        font-style: normal; */
+}
+
+body {
+  margin: 0px;
+  background-image: linear-gradient(
+    to right bottom,
+    #872772,
+    #7c2b7c,
+    #6f3085,
+    #5e358d,
+    #483a94,
+    #543892,
+    #5f3690,
+    #69348e,
+    #8a297e,
+    #a0216a,
+    #ae2554,
+    #b3333f
+  );
+}
+
+.bubble {
+  /* background: linear-gradient(135deg, #008080 10%, #000000 60%, #008080 10%); */
+  /* background: linear-gradient(180deg,rgba(18, 69, 79, 1) 0%, rgba(41, 120, 75, 1) 50%, rgba(28, 79, 44, 1) 100%); */
+  background: radial-gradient(
+    circle,
+    rgba(35, 79, 74, 1) 0%,
+    rgba(27, 79, 48, 1) 50%,
+    rgba(17, 56, 37, 1) 100%
+  );
+  /* box-shadow: 0px 0px 15px 2px #4e4e4e; */
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+  /* width: max-content; */
+  color: white;
+}
+
+.card {
+  background: radial-gradient(
+    circle,
+    rgba(35, 79, 74, 1) 0%,
+    rgba(27, 79, 48, 1) 50%,
+    rgba(17, 56, 37, 1) 100%
+  );
+  box-shadow: 10px 10px 13px 3px #000000;
+  border-radius: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+  margin-bottom: 30px;
+}
+
+#header {
+  color: white;
+  background: linear-gradient(24deg, rgb(19, 156, 7), rgb(187, 201, 1));
+  border: 3px solid #000000;
+  border-radius: 20px;
+
+  display: flex;
+
+  /* display: grid;
+        align-items: center;
+        grid-template-columns: max-content 0.8fr; */
+
+  margin-bottom: 30px;
+}
+
+#background {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  margin: 0px;
+
+  background-size: 40px 40px;
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.61) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.61) 1px, transparent 1px);
+
+  transition: transform 1s;
+}
+
+#offset {
+  border: 10px solid transparent;
+}
+
+.page {
+  border: 2px solid black;
+  border-style: dashed;
+  border-radius: 10px;
+  padding: 10px;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.fullscreen {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.cards_holder {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}

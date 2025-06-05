@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" type="text/css" href="button.css" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
+  </head>
+
+  <body>
+    <iframe
+      id="viewer"
+      class="fullscreen"
+      style="transform: scaleY(0); transition: transform 1s; border: none"
+    ></iframe>
+    <canvas
+      class="fullscreen"
+      id="three_js_canvas"
+      style="pointer-events: none"
+    ></canvas>
+    <div id="background">
+      <div id="offset">
+        <div id="header">
+          <div style="display: flex; align-items: center; flex: 1">
+            <h1 style="padding-left: 10px">SHINY LEAVES</h1>
+
+            <div
+              id="leaf_counter"
+              style="
+                display: flex;
+                align-items: center;
+                background: #a6a6a6;
+                border: 5px solid #a6a6a6;
+                border-radius: 12px;
+                margin-left: 10px;
+                box-shadow: 0px 0px 15px 2px #4e4e4e;
+                width: max-content;
+                color: white;
+              "
+            >
+              <h2 style="margin: 5px">0</h2>
+              <svg
+                id="shiny_leaf"
+                width="30px"
+                height="30px"
+                viewBox="0 0 50 50"
+                fill="gold"
+              >
+                <path
+                  d="M45.7,36.9c-3.8-6.4-12.3-12.7-18.6-15.2a12.8,12.8,0,0,0-3.4-1c-1.7-.2-2.5-1.4-2.2-2.5s.8-1.4,1.9-1.3c3,.4,7.7,2.3,12.2,5.2l.9.6.3.2,1.2.8a1,1,0,0,0,1.6-.9c-.6-4.7-2.1-9.4-6.5-12.4S21.2,8,14,9.2a80.6,80.6,0,0,1-9.7,1.3H3a.9.9,0,0,0-.9,1.3l.4,1.2c3.1,9.4,7.4,22.3,17.8,25.4a17.4,17.4,0,0,0,4.5.6A19.5,19.5,0,0,0,38,33.7,29.4,29.4,0,0,1,42.3,39,1.9,1.9,0,0,0,44,40a2.2,2.2,0,0,0,1.3-.4A2.1,2.1,0,0,0,45.7,36.9Z"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-wrap: wrap;
+            "
+          >
+            <button id="button_home" class="pushable" onclick="switch_page(1)">
+              <span class="shadow"></span>
+              <span class="edge"></span>
+              <span class="front">
+                <span class="icon"
+                  ><svg
+                    width="50"
+                    height="50"
+                    viewBox="0 0 500 500"
+                    fill="#FFFFFF"
+                    version="1.1"
+                    id="Capa_1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    xml:space="preserve"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <g>
+                        <g>
+                          <g>
+                            <path
+                              d="M487.083,225.514l-75.08-75.08V63.704c0-15.682-12.708-28.391-28.413-28.391c-15.669,0-28.377,12.709-28.377,28.391 v29.941L299.31,37.74c-27.639-27.624-75.694-27.575-103.27,0.05L8.312,225.514c-11.082,11.104-11.082,29.071,0,40.158 c11.087,11.101,29.089,11.101,40.172,0l187.71-187.729c6.115-6.083,16.893-6.083,22.976-0.018l187.742,187.747 c5.567,5.551,12.825,8.312,20.081,8.312c7.271,0,14.541-2.764,20.091-8.312C498.17,254.586,498.17,236.619,487.083,225.514z"
+                            ></path>
+                            <path
+                              d="M257.561,131.836c-5.454-5.451-14.285-5.451-19.723,0L72.712,296.913c-2.607,2.606-4.085,6.164-4.085,9.877v120.401 c0,28.253,22.908,51.16,51.16,51.16h81.754v-126.61h92.299v126.61h81.755c28.251,0,51.159-22.907,51.159-51.159V306.79 c0-3.713-1.465-7.271-4.085-9.877L257.561,131.836z"
+                            ></path>
+                          </g>
+                        </g>
+                      </g>
+                    </g></svg></span
+                ><span class="icon_label">HOME</span></span
+              >
+            </button>
+            <button id="button_games" class="pushable" onclick="switch_page(2)">
+              <span class="shadow"></span>
+              <span class="edge"></span>
+              <span class="front">
+                <span class="icon"
+                  ><svg
+                    width="60"
+                    height="50"
+                    viewBox="2 1 20 20"
+                    fill="#FFFFFF"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M7.99999 8.5C7.99999 7.94772 7.55227 7.5 6.99999 7.5C6.4477 7.5 5.99999 7.94772 5.99999 8.5V9H5.49999C4.9477 9 4.49999 9.44771 4.49999 10C4.49999 10.5523 4.9477 11 5.49999 11H5.99999V11.5C5.99999 12.0523 6.4477 12.5 6.99999 12.5C7.55227 12.5 7.99999 12.0523 7.99999 11.5V11H8.49999C9.05227 11 9.49999 10.5523 9.49999 10C9.49999 9.44771 9.05227 9 8.49999 9H7.99999V8.5Z"
+                      ></path>
+                      <path
+                        d="M18 8C18 8.55229 17.5523 9 17 9C16.4477 9 16 8.55229 16 8C16 7.44772 16.4477 7 17 7C17.5523 7 18 7.44772 18 8Z"
+                      ></path>
+                      <path
+                        d="M17 13C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11C16.4477 11 16 11.4477 16 12C16 12.5523 16.4477 13 17 13Z"
+                      ></path>
+                      <path
+                        d="M16 10C16 10.5523 15.5523 11 15 11C14.4477 11 14 10.5523 14 10C14 9.44771 14.4477 9 15 9C15.5523 9 16 9.44771 16 10Z"
+                      ></path>
+                      <path
+                        d="M19 11C19.5523 11 20 10.5523 20 10C20 9.44771 19.5523 9 19 9C18.4477 9 18 9.44771 18 10C18 10.5523 18.4477 11 19 11Z"
+                      ></path>
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M12 3C10.1879 3 7.96237 3.25817 6.21782 3.5093C3.94305 3.83676 2.09096 5.51696 1.60993 7.7883C1.34074 9.05935 1.07694 10.5622 1.01649 11.8204C0.973146 12.7225 0.877981 13.9831 0.777155 15.1923C0.672256 16.4504 1.09148 17.7464 1.86079 18.6681C2.64583 19.6087 3.88915 20.2427 5.32365 19.8413C6.24214 19.5842 6.97608 18.9387 7.5205 18.3026C8.07701 17.6525 8.51992 16.9124 8.83535 16.3103C9.07821 15.8467 9.50933 15.5855 9.91539 15.5855H14.0846C14.4906 15.5855 14.9218 15.8467 15.1646 16.3103C15.4801 16.9124 15.923 17.6525 16.4795 18.3026C17.0239 18.9387 17.7578 19.5842 18.6763 19.8413C20.1108 20.2427 21.3541 19.6087 22.1392 18.6681C22.9085 17.7464 23.3277 16.4504 23.2228 15.1923C23.122 13.9831 23.0268 12.7225 22.9835 11.8204C22.923 10.5622 22.6592 9.05935 22.39 7.7883C21.909 5.51696 20.0569 3.83676 17.7821 3.5093C16.0376 3.25817 13.8121 3 12 3ZM6.50279 5.48889C8.22744 5.24063 10.3368 5 12 5C13.6632 5 15.7725 5.24063 17.4972 5.4889C18.965 5.70019 20.1311 6.77489 20.4334 8.20267C20.6967 9.44565 20.9332 10.8223 20.9858 11.9164C21.0309 12.856 21.1287 14.1463 21.2297 15.3585C21.2912 16.0956 21.0342 16.8708 20.6037 17.3866C20.1889 17.8836 19.7089 18.0534 19.2153 17.9153C18.8497 17.8129 18.4327 17.509 17.9989 17.0021C17.5771 16.5094 17.2144 15.9131 16.9362 15.3822C16.4043 14.3667 15.3482 13.5855 14.0846 13.5855H9.91539C8.65178 13.5855 7.59571 14.3667 7.06374 15.3822C6.78558 15.9131 6.42285 16.5094 6.00109 17.0021C5.56723 17.509 5.15027 17.8129 4.78463 17.9153C4.29109 18.0534 3.81102 17.8836 3.39625 17.3866C2.96576 16.8708 2.70878 16.0956 2.77024 15.3585C2.87131 14.1463 2.96904 12.856 3.01418 11.9164C3.06675 10.8223 3.30329 9.44565 3.56653 8.20267C3.86891 6.77489 5.03497 5.70019 6.50279 5.48889Z"
+                      ></path>
+                    </g>
+                  </svg>
+                </span>
+                <span class="icon_label">GAMES</span>
+              </span>
+            </button>
+            <button
+              id="button_chests"
+              class="pushable"
+              onclick="switch_page(3)"
+            >
+              <span class="shadow"></span>
+              <span class="edge"></span>
+              <span class="front">
+                <span class="icon"
+                  ><svg
+                    width="60"
+                    height="50"
+                    viewBox="50 50 400 400"
+                    fill="#000000"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        fill="#ffffff"
+                        d="M58.553 89L42.27 211.8H79V89H58.553zM97 89v122.8h38V89H97zm56 0v122.8h56.666v-17.6h92.668v17.6H359V89H153zm224 0v122.8h38V89h-38zm56 0v122.8h36.73L453.446 89H433zM227.666 212.2v105.2h56.668V212.2h-56.668zM256 223.794a18.667 16.103 0 0 1 18.666 16.1 18.667 16.103 0 0 1-9.666 14.09v37.214h-18V254a18.667 16.103 0 0 1-9.666-14.106 18.667 16.103 0 0 1 18.666-16.1zM41 229.8v127.915l19.334 18.23V229.8H41zm37.334 0v158h355.332v-158H302.334v105.6h-92.668V229.8H78.334zm373.332 0v146.145L471 357.715V229.8h-19.334zM41 382.456V423h43.002L41 382.455zm430 0L427.998 423H471v-40.545zM92 405.8l18.24 17.2h291.52L420 405.8H92z"
+                      ></path>
+                    </g>
+                  </svg>
+                </span>
+                <span class="icon_label">CHESTS</span>
+              </span>
+            </button>
+            <button id="button_shop" class="pushable" onclick="switch_page(4)">
+              <span class="shadow"></span>
+              <span class="edge"></span>
+              <span class="front">
+                <span class="icon"
+                  ><svg
+                    width="50"
+                    height="50"
+                    viewBox="2 2 20 20"
+                    fill="none"
+                    stroke="#FFFFFF"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M18 8.5V8.35417C18 6.50171 16.4983 5 14.6458 5H9.5C7.567 5 6 6.567 6 8.5C6 10.433 7.567 12 9.5 12H14.5C16.433 12 18 13.567 18 15.5C18 17.433 16.433 19 14.5 19H9.42708C7.53436 19 6 17.4656 6 15.5729V15.5M12 3V21"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                    </g>
+                  </svg>
+                </span>
+                <span class="icon_label">SHOP</span>
+              </span>
+            </button>
+            <button id="button_gems" class="pushable" onclick="switch_page(5)">
+              <span class="shadow"></span>
+              <span class="edge"></span>
+              <span class="front">
+                <span class="icon"
+                  ><svg
+                    height="50"
+                    width="50"
+                    viewBox="0 0 512 512"
+                    version="1.1"
+                    id="_x32_"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    xml:space="preserve"
+                    fill="#ffffff"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <style type="text/css">
+                        .st0 {
+                          fill: #ffffff;
+                        }
+                      </style>
+                      <g>
+                        <path
+                          class="st0"
+                          d="M256.008,0L74.737,104.656v8.063v294.626L256,512l181.262-104.656V104.656L256.008,0z M265.304,37.602 l134.75,77.8l-71.548,41.308l-63.202-36.484V37.602z M246.704,37.602v82.624l-63.203,36.484l-71.556-41.308L246.704,37.602z M102.649,131.528l71.548,41.308V339.18l-71.548,41.308V131.528z M246.704,474.405l-134.75-77.798l71.548-41.316l63.203,36.491 V474.405z M192.805,339.18V172.836l63.202-36.499l63.187,36.482v166.36l-63.187,36.491L192.805,339.18z M265.304,474.405v-82.624 l63.194-36.491l71.556,41.316L265.304,474.405z M409.359,380.496l-71.556-41.316V172.836l71.556-41.316V380.496z"
+                        ></path>
+                        <polygon
+                          class="st0"
+                          points="214.499,259.431 261.841,169.485 214.499,197.888 "
+                        ></polygon>
+                      </g>
+                    </g>
+                  </svg>
+                </span>
+                <span class="icon_label">GEMS</span>
+              </span>
+            </button>
+          </div>
+          <div style="flex: 1"></div>
+        </div>
+
+        <div id="content_holder" style="display: grid">
+          <div id="home" class="page">
+            <div class="bubble">
+              <h1 style="width: max-content; margin: 4px">
+                Welcome to SHINY LEAVES!
+              </h1>
+            </div>
+
+            <div class="bubble">
+              <h2>
+                Thank you for visiting our website, we're excited to share with
+                you our growing collection of fun and engaging games.
+              </h2>
+              <ol>
+                <li style="margin-bottom: 10px">
+                  <b>How to Play:</b> Explore Games: Start by navigating to the "Games"
+                  page. Here, you'll find the Leaf Collector game which
+                  challenges your precision and timing skills. Your objective is
+                  to collect as many leaves as possible while avoiding their
+                  decay (read the game info for more detailed instructions).
+                </li>
+                <li style="margin-bottom: 10px">
+                  <b>What's Next?</b> Once you've collected enough Shiny Leaves, visit
+                  the "Shop" to purchase a key. Then, head over to the "Chests"
+                  page where you can unlock chests with your key. Inside each
+                  chest, you'll find a random gem of varying rarity, shape, and
+                  color.
+                </li>
+
+                <li style="margin-bottom: 10px">
+                  <b>Our Current Status:</b> We're still working on our website to
+                  enhance your experience and are excited about the features we
+                  have planned. While some parts of our site are still under
+                  construction, such as the ability to buy items in the shop,
+                  open chests, and interact with gems, you can already start collecting Shiny Leaves,
+                  which will unlock further experiences in future updates.
+                </li>
+
+                <li style="margin-bottom: 10px">
+                  <b>Gem Mastery:</b> The gems you acquire will be displayed on the
+                  "Gems" tab. Here, you'll have the opportunity to sell,
+                  upgrade, and combine your treasures to create something truly
+                  unique!
+                </li>
+
+                <li style="margin-bottom: 10px">
+                  <b>Stay Tuned!</b> Keep an eye out for upcoming features and
+                  enhancements we'll be rolling out soon. We value your feedback
+                  and look forward to hearing your thoughts.
+                </li>
+              </ol>
+              <h2>Thank you for choosing SHINY LEAVES. Happy collecting!</h2>
+            </div>
+          </div>
+
+          <div id="games" class="page">
+            <div class="bubble" style="place-self: center">
+              <h1 style="width: max-content; margin: 4px; color: white">
+                Games
+              </h1>
+            </div>
+            <hr />
+
+            <div class="cards_holder" id="games_holder"></div>
+          </div>
+
+          <div id="chests" class="page">
+            <div class="bubble" style="place-self: center">
+              <h1 style="width: max-content; margin: 4px; color: white">
+                Chests
+              </h1>
+            </div>
+            <hr />
+
+            <div class="cards_holder" id="chests_holder"></div>
+          </div>
+
+          <div id="shop" class="page">
+            <div class="bubble" style="place-self: center">
+              <h1 style="width: max-content; margin: 4px; color: white">
+                Shop
+              </h1>
+            </div>
+            <hr />
+
+            <div class="cards_holder" id="items_holder"></div>
+          </div>
+
+          <div id="gems" class="page">
+            <div class="bubble" style="place-self: center">
+              <h1 style="width: max-content; margin: 4px; color: white">
+                Gems
+              </h1>
+            </div>
+            <hr />
+
+            <div class="cards_holder" id="gems_holder"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="menu_holder"
+      style="
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        z-index: 2;
+        transform: translateY(-200%);
+        transition: transform 1s;
+        pointer-events: none;
+      "
+    >
+      <div
+        id="menu"
+        style="
+          display: flex;
+          flex-direction: column;
+          background-color: rgb(176 176 176 / 27%);
+          border-radius: 12px;
+          pointer-events: all;
+          padding: 20px;
+          text-align: center;
+        "
+      >
+        <h1 id="menu_label" style="color: white; font-size: xxx-large">
+          GAME PAUSED
+        </h1>
+        <button id="button_continue" class="pushable">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front">
+            <span style="font-size: x-large" class="icon_label">CONTINUE</span>
+          </span>
+        </button>
+        <button id="button_restart" class="pushable">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front">
+            <span style="font-size: x-large" class="icon_label">RESTART</span>
+          </span>
+        </button>
+        <button id="button_exit" class="pushable">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front">
+            <span style="font-size: x-large" class="icon_label">EXIT</span>
+          </span>
+        </button>
+        <h2 id="game_over_status" style="display: none; color: white"></h2>
+        <div style="overflow: hidden">
+          <div
+            id="warning"
+            style="margin-top: -100%; transition: margin-top 1s"
+          >
+            <h1 style="color: red">WARNING</h1>
+            <h2 style="color: red; margin-bottom: 0px">
+              if you exit the game this way,
+            </h2>
+            <h2 style="color: red; margin-top: 0px">
+              you will lose all shiny leaves!
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="info_holder"
+      style="
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        z-index: 2;
+        transform: translateY(-200%);
+        transition: transform 1s;
+        pointer-events: none;
+      "
+    >
+      <div
+        id="info"
+        style="
+          color: white;
+          display: flex;
+          flex-direction: column;
+          background-color: rgb(176 176 176 / 77%);
+          border-radius: 12px;
+          pointer-events: all;
+          padding: 20px;
+          text-align: center;
+          backdrop-filter: blur(5px);
+        "
+      >
+        <h1>GAME NAME</h1>
+        <div style="text-align: left"></div>
+        <button id="button_continue" class="pushable" onclick="close_info()">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front">
+            <span style="font-size: x-large" class="icon_label">CLOSE</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </body>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@v0.176.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.176.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script src="main.js"></script>
+  <script type="module" src="/three_script.js"></script>
+</html>
