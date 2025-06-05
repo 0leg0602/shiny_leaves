@@ -473,7 +473,7 @@ function animate() {
       rect.right < 0 ||
       rect.left > renderer.domElement.clientWidth
     ) {
-      console.log("off")
+      // console.log("off")
       return; // it's off screen
     }
 
